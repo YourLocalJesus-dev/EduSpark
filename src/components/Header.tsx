@@ -31,13 +31,12 @@ export default function Header() {
     return () => clearTimeout(timeout)
   }, [])
 
-  useEffect(() => {
+ const [userEmail, setUserEmail] = useState<string | null>(null)
+
+useEffect(() => {
   const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user && typeof user.email === 'string') {
-      setUserEmail(user.email as string)
-    } else {
-      setUserEmail(null)
-    }
+    const email = user?.email ?? null
+    setUserEmail(typeof email === 'string' ? email : null)
   })
   return () => unsubscribe()
 }, [])
