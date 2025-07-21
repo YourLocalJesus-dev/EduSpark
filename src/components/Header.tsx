@@ -58,7 +58,7 @@ export default function Header() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-700 ease-out">
         <div className="flex items-center gap-3">
-          <Image src="/zentellect.png" alt="logo" width={30} height={30} priority />
+          <Image src="/Eduspark.png" alt="logo" width={30} height={30} priority />
           <div>
             <h1
               className={`text-xl font-semibold transition-colors duration-300 ${
