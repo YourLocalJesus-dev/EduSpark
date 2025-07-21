@@ -22,7 +22,7 @@ const newNavLinks = [
 
 export default function Header() {
   const [mounted, setMounted] = useState(false)
-  const [userEmail, setUserEmail] = useState(null)
+  const [userEmail, setUserEmail] = useState<string | null>(null)
   const pathname = usePathname()
   const { isDark } = useTheme()
 
@@ -31,15 +31,13 @@ export default function Header() {
     return () => clearTimeout(timeout)
   }, [])
 
- const [userEmail, setUserEmail] = useState<string | null>(null)
-
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    const email = user?.email ?? null
-    setUserEmail(typeof email === 'string' ? email : null)
-  })
-  return () => unsubscribe()
-}, [])
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      const email = user?.email ?? null
+      setUserEmail(typeof email === 'string' ? email : null)
+    })
+    return () => unsubscribe()
+  }, [])
 
   const handleLogout = async () => {
     try {
