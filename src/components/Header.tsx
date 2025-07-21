@@ -32,12 +32,15 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) setUserEmail(user.email)
-      else setUserEmail(null)
-    })
-    return () => unsubscribe()
-  }, [])
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user && typeof user.email === 'string') {
+      setUserEmail(user.email as string)
+    } else {
+      setUserEmail(null)
+    }
+  })
+  return () => unsubscribe()
+}, [])
 
   const handleLogout = async () => {
     try {
