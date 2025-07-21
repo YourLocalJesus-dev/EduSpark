@@ -21,7 +21,7 @@ export async function POST(req) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer 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',
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
         model: 'mistralai/mistral-7b-instruct:free',
