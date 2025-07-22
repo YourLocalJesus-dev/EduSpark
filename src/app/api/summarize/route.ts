@@ -1,37 +1,30 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-export const dynamic = "force-dynamic";
+export async function POST(req: Request) {
+  const { text } = await req.json();
 
-export async function POST(req: NextRequest) {
   try {
-    const { text } = await req.json();
-
-    if (!text) {
-      return NextResponse.json({ summary: "Missing input text." }, { status: 400 });
-    }
-
-    const prompt = `Summarize this clearly and concisely:\n\n${text}`;
-
-    const aiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer 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`,
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct:free",
-        messages: [{ role: "user", content: prompt }],
-      }),
+        model: 'mixtral-8x7b-32768',
+        messages: [
+          { role: 'system', content: 'Summarize this text simply and clearly in a few lines.' },
+          { role: 'user', content: text }
+        ]
+      })
     });
 
-    const result = await aiResponse.json();
-
-    const summary = result?.choices?.[0]?.message?.content || "⚠️ No summary generated.";
-
+    const data = await res.json();
+    const summary = data.choices?.[0]?.message?.content || 'No summary returned.';
     return NextResponse.json({ summary });
 
-  } catch (error) {
-    console.error("❌ AI Summarization Error:", error);
-    return NextResponse.json({ summary: "⚠️ Internal error occurred." }, { status: 500 });
+  } catch (err) {
+    console.error('Groq summarization failed:', err);
+    return NextResponse.json({ summary: 'Failed to summarize.' }, { status: 500 });
   }
 }
