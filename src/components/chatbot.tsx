@@ -96,17 +96,6 @@ export default function Chatbot() {
           }`}
         />
 
-        <textarea
-          placeholder="Paste your notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          className={`w-full h-32 p-3 rounded-xl border resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ${
-            isDark
-              ? 'bg-gray-800 text-white border-gray-600 placeholder-gray-400'
-              : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'
-          }`}
-        />
-
         <div className="text-center">
           <button
             type="submit"
