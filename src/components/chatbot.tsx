@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState } from 'react'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -10,26 +10,21 @@ interface Message {
 
 export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([])
-  const [topic, setTopic] = useState<string>('')
-  const [notes, setNotes] = useState<string>('')
+  const [query, setQuery] = useState<string>('')
   const { isDark } = useTheme()
 
   const handleSend = async () => {
-    if (!topic.trim() || !notes.trim()) return
+    if (!query.trim()) return
 
-    setMessages(prev => [
-      ...prev,
-      { role: 'user', content: `Topic: ${topic}\nNotes: ${notes}` }
-    ])
-
-    setTopic('')
-    setNotes('')
+    setMessages(prev => [...prev, { role: 'user', content: query }])
+    const currentQuery = query
+    setQuery('')
 
     try {
       const res = await fetch('/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, notes })
+        body: JSON.stringify({ query: currentQuery })
       })
 
       const data = await res.json()
@@ -86,9 +81,9 @@ export default function Chatbot() {
       >
         <input
           type="text"
-          placeholder="Enter topic"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
+          placeholder="Enter your query"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           className={`w-full p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 ${
             isDark
               ? 'bg-gray-800 text-white border-gray-600 placeholder-gray-400'
