@@ -46,6 +46,7 @@ export default function EmailLogin() {
     >
       <h2 className="text-2xl font-bold text-center">Email Login</h2>
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
       <form onSubmit={login} className="space-y-4">
         <input
           type="email"
@@ -69,6 +70,13 @@ export default function EmailLogin() {
               : 'bg-gray-50 text-gray-900 border-gray-300'
           }`}
         />
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition"
+        >
+          {loading ? 'Logging In...' : 'Log In'}
+        </button>
       </form>
 
       <div className="flex items-center justify-center gap-3">
